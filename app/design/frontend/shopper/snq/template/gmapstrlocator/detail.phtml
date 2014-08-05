@@ -1,0 +1,264 @@
+<?php
+
+$apikey_source = '';
+
+if(Mage::helper('gmapstrlocator')->getGMapAPIKey() != ''):
+
+$apikey_source = 'http://maps.google.com/maps/api/js?key='.Mage::helper('gmapstrlocator')->getGMapAPIKey().'&sensor=false';
+
+else :
+
+$apikey_source = 'http://maps.google.com/maps/api/js?sensor=false';
+
+endif;
+
+?>
+
+<?php if(version_compare(Mage::getVersion(), '1.9.0.0') < 0): ?>
+  <script type="text/javascript" src="<?php echo $this->getJsUrl('gmapstrlocator/jquery.js'); ?>"></script>
+<?php endif; ?>
+
+
+<script type="text/javascript" src="<?php echo $this->getJsUrl('gmapstrlocator/caroufredsel/jquery.carouFredSel-6.2.0-packed.js'); ?>"></script>
+
+
+<script type="text/javascript" src="<?php echo $apikey_source; ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('gmapstrlocator/googlemarkerInfobox.js'); ?>"></script>
+
+
+<?php
+
+    $Store_detail = Mage::registry('store_detail_data');
+
+    $Store_attributes = Mage::helper('gmapstrlocator')->listStoreAttributes($Store_detail['linked_attributes']);;
+    $Store_products = $this->getProductsOfCurrentStore($Store_detail['gmapstrlocator_id']);
+
+    //Config values
+    $standard_lat = Mage::helper('gmapstrlocator')->getGMapStandardLatitude();
+    $standard_long = Mage::helper('gmapstrlocator')->getGMapStandardLongitude();
+
+    //direction button text
+    $direction_button_text = Mage::helper('gmapstrlocator')->getDirectionButtonText();
+    if($direction_button_text == ''): $direction_button_text = 'Get Direction'; endif;
+
+    //GMap Marker Image
+    $gmap_marker_image = Mage::helper('gmapstrlocator')->getGMapMarkerSrc();
+    if(!Mage::helper('gmapstrlocator')->getGMapMarkerExist()): $gmap_marker_image = $this->getSkinUrl('images/gmapstrlocator/ib_icon.png'); endif;
+
+    //GMap Hover Marker Image
+    $gmap_hover_marker = $gmap_marker_image;
+    if(Mage::helper('gmapstrlocator')->getGMapPopupBgprimaryExist()): $gmap_hover_marker = Mage::helper('gmapstrlocator')->getGMapPopupBgprimarySrc(); endif;
+
+
+    if(Mage::helper('gmapstrlocator')->getGMapPopupBgsecondaryExist()):
+	$popup_secondary_image = Mage::helper('gmapstrlocator')->getGMapPopupBgsecondarySrc();
+    else:
+	$popup_secondary_image =  $this->getSkinUrl('images/gmapstrlocator/map_popup_bottom.png');
+    endif;
+
+
+    $marker_hover_enabled = Mage::getStoreConfig('gmapstrlocator/info_popup/enable_mouseover_marker');
+    $marker_numbers_enabled = Mage::getStoreConfig('gmapstrlocator/info_popup/enable_marker_numbers');
+    $marker_sidebar_enabled = Mage::getStoreConfig('gmapstrlocator/info_popup/enable_sidebar_markers');
+
+
+    $list_url = Mage::helper('gmapstrlocator')->getGMapListIdentifier();
+    $seo_sufix = Mage::helper('gmapstrlocator')->getGMapSeoSuffix();
+
+
+?>
+
+
+
+
+
+		<div id="main">
+
+			<h2 class="store-name"><?php echo $Store_detail['store_name']; ?> </h2>
+
+			<div id="store-map" class="store-map">
+
+
+
+			</div>
+
+			<div class="description"><p><?php echo $Store_detail['store_description']; ?></p></div>
+
+			<div class="detail-left">
+
+				<div class="store-detail">
+
+				    <div class="info">
+					<h2 class="title-2"><?php echo $this->__('Contact Information'); ?></h2>
+					<address><?php echo $Store_detail['address'].', '.$Store_detail['district'].', '.$Store_detail['postal_code'].' '.$Store_detail['state'].', '.$Store_detail['country']; ?></address>
+
+					<?php if($Store_detail['store_phone']): ?>  <span><?php echo $this->__('Phone') ?>: <?php echo $Store_detail['store_phone']; ?> </span><br> <?php endif; ?>
+					<?php if($Store_detail['store_fax']): ?>  <span><?php echo $this->__('Fax : ').$Store_detail['store_fax']; ?> </span><br> <?php endif; ?>
+				    </div>
+
+				    <?php if($Store_attributes): ?>
+
+					    <div class="attributes">
+						<h2 class="title-2"><?php echo $this->__('Attributes'); ?></h2>
+						<?php echo $Store_attributes; ?>
+					    </div>
+
+				    <?php endif; ?>
+
+				</div>
+
+			</div>
+
+
+
+			<div class="detail-right">
+
+
+				<div class="image_carousel">
+					<div id="foo2" >
+
+						<?php foreach($Store_products as $prod):
+
+							$product_id = $prod['product_id'];
+
+							$_product = Mage::getModel('catalog/product')->load($product_id);
+
+							$_img = '<div class="iner_container" ><a href="'.$_product->getProductUrl().'" title="'.$_product->getName().'" ><img id="image" src="'.Mage::helper('catalog/image')->init($_product, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(FALSE)->keepFrame(TRUE)->resize(140, 140).'" alt="'.$_product->getName().'" /></a></div>';
+
+							echo $_img;
+
+						endforeach; ?>
+
+					</div>
+					<div class="clearfix"></div>
+					<a class="gmap-prev" id="foo2_prev" href="#"><span><?php echo $this->__('Prev') ?></span></a>
+					<a class="gmap-next" id="foo2_next" href="#"><span><?php echo $this->__('Next') ?></span></a>
+					<div class="gmap-pagination" id="foo2_pag"></div>
+				</div>
+
+
+			</div>
+
+			<div class="back-link">
+			    <a href="<?php echo Mage::helper('gmapstrlocator')->getStoreLocatorPageUrl(); ?>"><?php echo $this->__('Back') ?></a>
+			</div>
+
+		</div>
+
+		<?php
+
+		    $gmap_marker_image = Mage::helper('gmapstrlocator')->getGMapMarkerSrc();
+		    if(!Mage::helper('gmapstrlocator')->getGMapMarkerExist()): $gmap_marker_image = $this->getSkinUrl('images/gmapstrlocator/ib_icon.png'); endif;
+		?>
+
+		<script type="text/javascript">
+
+
+		    var destinationIcon = '<?php echo $gmap_marker_image; ?>';
+		    var map;
+		    var marker;
+
+
+		    jQuery(document).ready(function(){
+
+			jQuery("#foo2").carouFredSel({
+				circular	:	false,
+				infinite	:	false,
+				auto 	:	false,
+				prev	:   	{	button	: "#foo2_prev",
+							    key		: "left"
+						    },
+				next	:   	{	button	: "#foo2_next",
+							    key		: "right"
+						    },
+				pagination	:	"#foo2_pag"
+			});
+
+			initStoreMap();
+
+		    });
+
+
+
+		    function initStoreMap(){
+
+
+			    var map_opts = {
+				zoom	: 8,
+				center	: new google.maps.LatLng(<?php echo $Store_detail['latitude'] ?>, <?php echo $Store_detail['longitude'] ?>),
+				mapTypeId	: google.maps.MapTypeId.ROADMAP,
+			    }
+
+			    map = new google.maps.Map(document.getElementById('store-map'), map_opts);
+			    createMarker();
+
+		    }
+
+
+
+		    function createMarker(){
+
+			    var marker_image = destinationIcon;
+
+			    marker = new google.maps.Marker({
+				position : new google.maps.LatLng(<?php echo $Store_detail['latitude'] ?>, <?php echo $Store_detail['longitude'] ?>),
+				icon	 : marker_image,
+				map	: map
+			    });
+
+
+			    google.maps.event.addListener(marker, 'click', (function(marker) {
+				return function(){
+				    createPopup();
+				}
+			    })(marker));
+
+		    }
+
+		    function createPopup(){
+
+			    var boxText ="";
+			    var s_id = "<?php echo $Store_detail['gmapstrlocator_id'] ?>";
+			    var s_name = "<?php echo $Store_detail['store_name'] ?>";
+			    var s_description = "<?php echo $Store_detail['store_description'] ?>";
+			    var s_distance = "";
+			    var s_image = "";
+
+			    var s_phone = "<?php echo $Store_detail['store_phone'] ?>";
+			    var s_fax = "<?php echo $Store_detail['store_fax'] ?>";
+			    var s_state = ',';
+
+			    boxText = document.createElement('div');
+			    boxText.innerHTML = '<div id="pop_div" class="map_popup_top1"><h1>'+s_name+'</h1>'+s_description+'<div class="store-more-info">'+s_phone+'</div><div class="getting_directions"><div class="clear"></div></div></div>';
+			    var box = boxText.innerHTML + '<div class="map_popup_bottom"><img src="<?php echo $popup_secondary_image; ?>" alt="" width="290px;" /></div>';
+
+
+			    var popupOptions = {
+
+				content : box,
+				disableAutoPan : false,
+				maxWidth	: 0,
+				pixelOffset	: new google.maps.Size(-5, -20),
+				zIndex	: null,
+				boxStyle: {
+						background: "url('<?php echo $this->getSkinUrl('images/gmapstrlocator/map_popup_top.png')?>') no-repeat"
+						,opacity: 1
+						,width: "295px"
+						,height:"250px"
+				},
+				closeBoxMargin : "-13px -5px 2px",
+				closeBoxURL: "<?php echo $this->getSkinUrl('images/gmapstrlocator/close_black.png')?>",
+				close_onmouseover :"<?php echo $this->getSkinUrl('images/gmapstrlocator/close_icon.png')?>",
+				close_onmouseout :"<?php echo $this->getSkinUrl('images/gmapstrlocator/close_black.png')?>",
+				infoBoxClearance: new google.maps.Size(1, 1),
+				isHidden: false,
+				pane: "floatPane",
+				enableEventPropagation: true
+			    }
+				var ib = new InfoBox(popupOptions);
+				ib.open(map, marker);
+
+		    }
+
+
+		</script>

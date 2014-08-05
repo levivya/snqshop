@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <SNQ_Chronopay>
+            <version>0.1.0</version>
+        </SNQ_Chronopay>
+    </modules>
+    
+    <global>
+        
+        <models>
+            <chronopay>
+                <class>SNQ_Chronopay_Model</class>
+            </chronopay>
+        </models>
+        
+        <helpers>
+            <chronopay>
+                <class>SNQ_Chronopay_Helper</class>
+            </chronopay>
+        </helpers>
+        
+        <payment>
+            <groups>
+                <chronopay>Chronopay</chronopay>
+            </groups>
+        </payment>
+        
+        <events>
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <snq_chronopay_observer>
+                        <class>SNQ_Chronopay_Model_Observer</class>
+                        <method>saveOrderQuoteToSession</method>
+                    </snq_chronopay_observer>
+                </observers>
+            </checkout_type_onepage_save_order_after>
+        </events>
+        
+    </global>
+    
+    <default>
+        <payment>
+            <chronopay>
+                <model>chronopay/standard</model>
+                <group>chronopay</group>
+                <active>1</active>
+                <title>Credit Card (Chronopay Payment Gateway) </title>
+                <payment_action>sale</payment_action>
+                <allowspecific>0</allowspecific>
+            </chronopay>
+        </payment>
+        <chronopay>
+            <settings>
+                <activationstatus>0</activationstatus>
+            </settings>
+        </chronopay>
+    </default>
+    
+    <frontend>
+        <secure_url>
+            <chronopay_processing>/chronopay/standard</chronopay_processing>
+        </secure_url>
+        <routers>
+            <chronopay>
+                <use>standard</use>
+                <args>
+                    <module>SNQ_Chronopay</module>
+                    <frontName>chronopay</frontName>
+                </args>
+            </chronopay>
+        </routers>
+    </frontend>
+
+</config>

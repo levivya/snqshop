@@ -1,0 +1,153 @@
+/**
+ * File for custom CSS. You can use it to override the default styling of the theme.
+ *
+ * 1. Copy the file "default.override.css" and rename it to "override.css".
+ * 2. Enable it in the admin panel.
+ *
+ */
+
+ h1, h2, h3 {letter-spacing:0em;}
+ 
+/*Cart*/
+.cart-top > a span {padding: 0 0 0 35px;}
+.cart-top > a {background-color:transparent; -webkit-border-radius: 0%; -moz-border-radius: 0%; border-radius: 0%; }
+.cart-top > a:hover {background-color:transparent; text-decoration:none; }
+.cart-top > a span {font-size: 11px;font-weight:300;}
+/*END Cart*/
+
+/*Header*/
+header {-webkit-box-shadow:0px 0px 1px 0px rgba(0,0,0, 0.15); -moz-box-shadow:0px 0px 1px 0px rgba(0,0,0, 0.15); box-shadow:0px 0px 1px 0px rgba(0,0,0, 0.15);}
+header a.logo {  text-decoration:none !important; margin:20px 0; }
+.below-logo #queldoreiNav {width:auto; margin: 0 0 -3px 3px;}
+.phone-top-container{float:left; position:relative; margin:0px 15px 0 0px; height:38px; font-size:13px; line-height: 38px;}
+/*END Header*/		 
+
+/*Top Menu*/
+#queldoreiNav>li>a>span{padding:0px 10px; border-top:0px solid transparent; padding-top: 3px;}
+#queldoreiNav>li>a {font-weight:300; letter-spacing:0em;}
+#queldoreiNav>li>a:hover>span,
+#queldoreiNav>li.over>a>span,
+#queldoreiNav>li.active>a>span{border-top:0px solid #97d2c9; padding-top: 3px;}
+#queldoreiNav li { text-transform: uppercase; }
+#queldoreiNav>li:hover,
+#queldoreiNav>li.over,
+#queldoreiNav>li.active{ -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
+#queldoreiNav div.sub-wrapper {margin-top: 40px; -webkit-box-shadow:0px -1px rgba(0, 0, 0, 1); -moz-box-shadow:0px -1px rgba(0, 0, 0, 1); box-shadow:0px -1px rgba(0, 0, 0, 1);}	
+/*END Top Menu*/
+
+/*Slider*/
+.slider {padding: 0px 0 20px;}
+/*END Slider*/
+
+/*Product List*/
+.block { border-top:3px solid #666; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;
+    -webkit-box-shadow:0px 0px 6px 0px rgba(0, 0, 0, 0.10);
+    -moz-box-shadow:0px 0px 6px 0px rgba(0, 0, 0, 0.10);
+    box-shadow:0px 0px 6px 0px rgba(0, 0, 0, 0.10);}
+.block .block-content {text-transform: uppercase;}
+.block .block-title strong {letter-spacing: 0em;}
+.breadcrumbs {text-transform: uppercase;}
+.product-name {text-transform: uppercase;}
+.products-grid li.item { -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0.0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); }
+.price-box {text-align:center;}
+.products-grid .product-name {text-align: center; }
+.products-grid .price-box {letter-spacing: -0.5px;}
+/*END Product List*/
+
+
+
+/*Product page*/
+.product-view .product-img-box .product-image {border-radius:0px; -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
+.product-view .product-img-box .more-views { border-radius:0px; -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
+button.button span {-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;}
+.product-view .add-to-cart button.button span{ height:35px; width:230px; background-image:none; }
+.product-view .add-to-cart button.button span span {line-height:35px; padding:0 0 0 0; background:none; }
+.product-view .product-shop .product-options {margin: 15px 0 13px;}
+.size_guide_link {text-transform: uppercase; color:#000000;}
+.product-options dd select {width:230px; margin: 5px 15px 0 0;}
+.product-view .product-shop-info .add-to-links .wishlist { height:33px; width:228px; border:1px solid #e0e0e0; font-size:14px; text-align:center; letter-spacing: -0.3px;}
+.product-view .product-shop-info .add-to-links .wishlist:hover{background-color:#e0e0e0;}
+.product-view .add-to-links .link-wishlist:hover {text-decoration:none;}
+.product-view .add-to-links .wishlist span{ height:35px; width:228px;}
+.product-view .add-to-links .wishlist span span {line-height:35px; padding:0 0 0 0; background:none; }
+.product-view .product-shop .product-options-bottom { width:100%; border-bottom:0px solid #e0e0e0; padding-bottom: 25px;}
+.product-view .add-to-cart {margin:0; width: 230px; float:left; padding: 0 15px 5px 0;}
+.product-view .add-to-links {margin:0; float:left;}
+.product-view .add-to-links  a{color:#000000;}
+.product-view .product-shop-info .add-to-links {float: left; clear:none;}
+.product-view .product-options dd {padding: 0px 0px 10px; margin:0 0 10px; border-bottom:0px solid; border-bottom-color:#e3e3e3; border-bottom-color:rgba(227,227,227,0.61);}
+.product-view h1 {font-size:24px; letter-spacing:0px}
+.product-view .product-shop .price-box {padding-bottom: 10px;}
+.product-view .product-shop .price-box .price {font-size: 38px; line-height: 38px;}
+.product-view .product-shop .price-box .old-price .price {font-size: 20px;}
+.product-view .description { margin:0px 0; padding:15px 0; border:1px solid #e0e0e0; border-left:none; border-right:none;}
+.product-view .description .description-title{text-transform: uppercase; padding-bottom:10px; font-size: 15px;}
+
+/*Share social*/
+.share-links{padding:5px 0; border-bottom:1px solid #e0e0e0;}
+.share-links>span{text-transform:uppercase;height:30px;line-height:30px;display:inline-block;vertical-align:middle;margin-right:5px;font-size:15px;letter-spacing: -1px;font-family: "Open Sans";}
+.social-media-links{display:inline-block}
+.social-media-links{list-style:none}
+.social-media-links li{display:-moz-inline-stack;display:inline-block;vertical-align:middle;*vertical-align:auto;zoom:1;*display:inline}
+.social-media-links a{background:url('../images/1x-scec1694088.png');width:30px;height:30px;text-indent:-9999em;text-transform:capitalize;display:block}
+.social-media-links #tell-a-friend-link{background:url('../images/1x-scec1694088.png');background-position:0 0;float:none}
+.social-media-links #tell-a-friend-link:hover{background-position:-30px 0}
+.social-media-links .share-facebook a{background-position:-60px 0}
+.social-media-links .share-facebook a:hover{background-position:-90px 0}
+.social-media-links .share-twitter a{background-position:-300px 0}
+.social-media-links .share-twitter a:hover{background-position:-330px 0}
+.social-media-links .share-google-plus1 a{background-position:-120px 0}
+.social-media-links .share-google-plus1 a:hover{background-position:-150px 0}
+.social-media-links .share-tumblr a{background-position:-240px 0}
+.social-media-links .share-tumblr a:hover{background-position:-270px 0}
+.social-media-links .share-pinterest a{background-position:-180px 0}
+.social-media-links .share-pinterest a:hover{background-position:-210px 0}
+.social-media-links .share-weibo a{background-position:-360px 0}
+.social-media-links .share-weibo a:hover{background-position:-390px 0}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi){.social-media-links a{background-image:url('../images/2x-sd35be5777a.png');background-size:420px 30px}}
+/*END Share social*/
+
+button.button span {height:35px; -webkit-border-radius:0px; -moz-border-radius:0px; border-radius:0px;}
+button.button span span {line-height:35px; text-transform: none;}
+.page-title h1, .page-title h2 {font-size:26px;}
+/*END Product page*/
+
+
+/*Product tab*/
+.product-tabs a { font-size: 15px; text-transform: uppercase;}
+.product-tabs-content {position:relative; border:1px solid #e0e0e0; border-right:none; border-left:none; z-index:2; background:#fff; padding:23px; margin:69px 0 40px; border-radius:0px; -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0.15); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0.15); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0.15);}	
+#product-customer-reviews .review-title{color:#000;}	
+#product-review-table {width: 500px;}
+.add-review .form-list input.input-text { width: 490px; }
+add-review.form-list textarea.input-box { width:490px;}
+/*END Product tab*/
+
+/*News*/
+.news-item-content h4 { color:#000;}
+.news-item {margin: 10px 0 15px 0;}
+.news-item .description {padding-top: 10px;}
+.news-item-content .social .fb-like {width: 110px;padding-right: 5px;}
+.fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] { width: 110px !important;  }
+/*END News*/
+
+/*Shops*/
+.top_title {	height: auto; padding-bottom:20px;}
+.top_title .head-content {font-family: "Open Sans",Arial,Helvetica,sans-serif;}
+.top_title h1 {font-weight: normal;}
+.col-main, .col-main-left, .col-main-right { padding: 20px 15px 0;}
+#main .form .field3 { width: 70px; }
+#main .form { width: 100%; margin:0 auto; padding:10px 5px 15px 15px; background:#f3f3f3; border:#dadada 0px; border-radius:0px; }
+#main .map { width: 72%; float:right; margin-top: 20px; }
+#main .stores {  width: 25%; float:left; margin-top: 20px; }
+#main .store-name { padding-bottom:5px;  color: #000000;  font-family: "Open Sans",Arial,Helvetica,sans-serif;  font-size: 20px; letter-spacing: 0em;}
+#main .store-map { height: 430px; }
+/*End Shops*/
+
+/*Other*/
+.notice-msg { border-color:#f3f3f3; background-color:#fff; color:#000; }
+/*END Other*/
+
+/*Checkout*/
+.top-opc li h2{line-height: 12px; font-size: 12px;}
+/*END Checkout*/
+
