@@ -32,6 +32,8 @@ class Queldorei_Shopperslideshow_Adminhtml_ShopperrevolutionController extends M
 		$id     = $this->getRequest()->getParam('id');
 		$model  = Mage::getModel('shopperslideshow/shopperrevolution')->load($id);
 
+		$model->setCity(explode(',', $model->getCity()));
+
 		if ($model->getId() || $id == 0) {
 
 			$this->_initAction();
@@ -61,7 +63,7 @@ class Queldorei_Shopperslideshow_Adminhtml_ShopperrevolutionController extends M
  
 	public function saveAction() {
 		if ($data = $this->getRequest()->getPost()) {
-			
+
 			if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != null) {
                 $result['file'] = '';
 				try {	
@@ -69,7 +71,7 @@ class Queldorei_Shopperslideshow_Adminhtml_ShopperrevolutionController extends M
 					$uploader = new Varien_File_Uploader('image');
 					
 					// Any extention would work
-	           		$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png'));
+					$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png'));
 					$uploader->setAllowRenameFiles(true);
 					
 					// Set the file upload mode 
@@ -87,9 +89,9 @@ class Queldorei_Shopperslideshow_Adminhtml_ShopperrevolutionController extends M
 	                Mage::getSingleton('adminhtml/session')->setFormData($data);
 	                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
 	                return;
-		        }
+				}
 	        
-		        $data['image'] = 'queldorei/shopper/revolution/'.$result['file'];
+		    $data['image'] = 'queldorei/shopper/revolution/'.$result['file'];
 			}
 
             if(isset($_FILES['thumb']['name']) && $_FILES['thumb']['name'] != null) {
@@ -107,15 +109,15 @@ class Queldorei_Shopperslideshow_Adminhtml_ShopperrevolutionController extends M
 	                Mage::getSingleton('adminhtml/session')->setFormData($data);
 	                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
 	                return;
-		        }
+		    }
 
-		        $data['thumb'] = 'queldorei/shopper/revolution/'.$result['file'];
+		    $data['thumb'] = 'queldorei/shopper/revolution/'.$result['file'];
 			}
-	  			
-	  			
+
 			$model = Mage::getModel('shopperslideshow/shopperrevolution');
 			$model->setData($data)
 				->setId($this->getRequest()->getParam('id'));
+			$model->setCity(implode(',', $this->getRequest()->getParam('city')));
 
 			try {
 				if ($model->getCreatedTime == NULL || $model->getUpdateTime() == NULL) {
