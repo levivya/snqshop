@@ -20,6 +20,8 @@ header {-webkit-box-shadow:0px 0px 1px 0px rgba(0,0,0, 0.15); -moz-box-shadow:0p
 header a.logo {  text-decoration:none !important; margin:20px 0; }
 .below-logo #queldoreiNav {width:auto; margin: 0 0 -3px 3px;}
 .phone-top-container{float:left; position:relative; margin:0px 15px 0 0px; height:38px; font-size:13px; line-height: 38px;}
+.city-top-container{float:left; position:relative; margin:0px 35px 0 0px; height:38px; font-size:13px; line-height: 38px;}
+
 /*END Header*/		 
 
 /*Top Menu*/
@@ -57,6 +59,7 @@ header a.logo {  text-decoration:none !important; margin:20px 0; }
 
 
 /*Product page*/
+.product-view .product-name { margin-bottom:7px; padding-top: 3px;}
 .product-view .product-img-box .product-image {border-radius:0px; -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
 .product-view .product-img-box .more-views { border-radius:0px; -webkit-border-radius:0px; -moz-border-radius:0px; -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
 button.button span {-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;}
