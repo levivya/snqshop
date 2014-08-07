@@ -70,6 +70,18 @@ class Queldorei_Shopperslideshow_Block_Adminhtml_Shopperrevolution_Grid extends 
           ),
       ));
 
+			$this->addColumn('global', array(
+          'header'    => Mage::helper('shopperslideshow')->__('Global'),
+          'align'     =>'left',
+          'index'     => 'global',
+      ));
+
+			$this->addColumn('city', array(
+          'header'    =>Mage::helper('shopperslideshow')->__('City'),
+          'align'     =>'left',
+          'index'     => 'city',
+      ));
+
       $this->addColumn('sort_order', array(
             'header'    => Mage::helper('shopperslideshow')->__('Sort Order'),
             'align'     =>'left',

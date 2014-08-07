@@ -229,12 +229,43 @@ class Queldorei_Shopperslideshow_Block_Adminhtml_Shopperrevolution_Edit_Tab_Form
 			'name' => 'sort_order',
 		));
 
+		$fieldset->addField('global', 'select', array(
+			'label' => Mage::helper('shopperslideshow')->__('Global slide'),
+			'name' => 'global',
+			'values' => array(
+				array(
+					'value' => 1,
+					'label' => Mage::helper('shopperslideshow')->__('Yes'),
+				),
+				array(
+					'value' => 2,
+					'label' => Mage::helper('shopperslideshow')->__('No'),
+				),
+			),
+		));
+    $fieldset->addField('city', 'multiselect', array(
+      'label' => Mage::helper('shopperslideshow')->__('City'),
+      'required' => false,
+      'name' => 'city',
+      'values' => array(
+        array(
+          'value' => 'Москва',
+					'label' => 'Москва'
+        ),
+        array(
+					'value' => 'Краснодар',
+					'label' => 'Краснодар'
+        ),
+      ),
+    ));
+
 		if (Mage::getSingleton('adminhtml/session')->getShopperrevolutionData()) {
 			$form->setValues(Mage::getSingleton('adminhtml/session')->getShopperrevolutionData());
 			Mage::getSingleton('adminhtml/session')->getShopperrevolutionData(null);
 		} elseif (Mage::registry('shopperrevolution_data')) {
 			$form->setValues(Mage::registry('shopperrevolution_data')->getData());
 		}
+
 		return parent::_prepareForm();
 	}
 }

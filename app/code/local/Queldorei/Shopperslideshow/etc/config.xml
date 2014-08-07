@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Queldorei_Shopperslideshow>
-            <version>1.5.0</version>
+            <version>1.5.3</version>
         </Queldorei_Shopperslideshow>
     </modules>
     <admin>
@@ -197,6 +197,7 @@
                 <stopAfterLoops>-1</stopAfterLoops>
                 <timeline>1</timeline>
                 <timeline_position>top</timeline_position>
+								<global>1</global>
             </revolutionslider>
 		</shopperslideshow>
 	</default>
