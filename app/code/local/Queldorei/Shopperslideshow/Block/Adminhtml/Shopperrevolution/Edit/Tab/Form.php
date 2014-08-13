@@ -243,20 +243,24 @@ class Queldorei_Shopperslideshow_Block_Adminhtml_Shopperrevolution_Edit_Tab_Form
 				),
 			),
 		));
+
+		$collection = Mage::getModel('gmapstrlocator/gmapstrlocator')
+			->getCollection()
+			->distinct(true)
+			->addFieldToSelect('district');
+
+		// Retrieve cities from the store locator
+		$cities = array();
+	
+		foreach($collection as $city) {
+			$cities[] = array('value' => $city['district'], 'label' => $city['district']);
+		}
+
     $fieldset->addField('city', 'multiselect', array(
       'label' => Mage::helper('shopperslideshow')->__('City'),
       'required' => false,
       'name' => 'city',
-      'values' => array(
-        array(
-          'value' => 'Москва',
-					'label' => 'Москва'
-        ),
-        array(
-					'value' => 'Краснодар',
-					'label' => 'Краснодар'
-        ),
-      ),
+			'values' => $cities
     ));
 
 		if (Mage::getSingleton('adminhtml/session')->getShopperrevolutionData()) {
