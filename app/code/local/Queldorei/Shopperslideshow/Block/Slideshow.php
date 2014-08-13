@@ -46,9 +46,7 @@ class Queldorei_Shopperslideshow_Block_Slideshow extends Mage_Core_Block_Templat
 			->addFieldToFilter('status', 1)
 			->setOrder('sort_order', 'asc');
 		// geotargeting filter
-		error_log($this->getMyCity());
 		$slides->getSelect()->where("(global = 1) or (global = 2 and city like '%".$this->getMyCity()."%')");
-//		error_log(print_r($slides->getSelect()->__toString(), true), 0);
 		return $slides;
 	}
 
