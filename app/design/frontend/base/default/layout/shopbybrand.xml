@@ -22,10 +22,12 @@
 -->
 <layout version="0.1.0">
     <default>
+	<!--
         <reference name="top.links">
             <block type="shopbybrand/toplink" name="toplink-shopbybrand"/>
         </reference>
-            <reference name="head">
+    -->    
+		<reference name="head">
                 <action method="addCss">
                     <stylesheet>css/shopbybrand/default.css</stylesheet>
                 </action> 
