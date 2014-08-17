@@ -35,6 +35,9 @@ header a.logo {  text-decoration:none !important; margin:20px 0; }
 #queldoreiNav>li.over,
 #queldoreiNav>li.active{ -webkit-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); -moz-box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0); box-shadow:0px 0px 0px 0px rgba(0, 0, 0, 0);}
 #queldoreiNav div.sub-wrapper {margin-top: 40px; -webkit-box-shadow:0px -1px rgba(0, 0, 0, 1); -moz-box-shadow:0px -1px rgba(0, 0, 0, 1); box-shadow:0px -1px rgba(0, 0, 0, 1);}	
+
+#nav>li>a { font-weight: 300; letter-spacing: -0.01em;}
+
 /*END Top Menu*/
 
 /*Slider*/
@@ -153,4 +156,8 @@ add-review.form-list textarea.input-box { width:490px;}
 /*Checkout*/
 .top-opc li h2{line-height: 12px; font-size: 12px;}
 /*END Checkout*/
+
+/*Footer*/
+.footer-info h4{letter-spacing:-0.01em;}
+/*END Footer*/
 
