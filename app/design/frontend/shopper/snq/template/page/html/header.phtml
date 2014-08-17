@@ -26,6 +26,7 @@
 /**
  * @var Mage_Page_Block_Html_Header $this
  */
+//require_once('app/code/local/IPGeoBaseRU/IPGeoBaseRU_IPGeoBase.php');
 $config = Mage::getStoreConfig('shoppersettings', Mage::app()->getStore()->getId());
 $hdr_style = '';
 if ( $config['design']['search_field'] ) {
@@ -34,7 +35,6 @@ if ( $config['design']['search_field'] ) {
 if ( $config['design']['below_logo'] ) {
 	$hdr_style .= ' below-logo';
 }
-
 ?>
 
 <!-- HEADER BOF -->
@@ -62,21 +62,44 @@ if ( $config['design']['below_logo'] ) {
 			        <?php endif?>
 	                <div class="top-dropdowns">
 	                    <div class="city-top-container">
-                          <select>
 <?
-	$collection = Mage::getModel('gmapstrlocator/gmapstrlocator')
-      ->getCollection()
-      ->distinct(true)
-      ->addFieldToSelect('district');
-
-    // Retrieve cities from the store locator
-    $cities = array();
-
-    foreach($collection as $city) {
-      echo '<option>'.$city['district'].'</option>';
-    }
+  // determine the city
+  if(empty(Mage::getSingleton('customer/session')->getCity()))
+	{
+		$city = $this->getRequest()->getParam('city');
+		if(!empty($city))
+		{
+			Mage::getSingleton('customer/session')->setCity($city);
+		}
+		else
+		{
+			$geoip = new IPGeoBaseRU_IPGeoBase();
+			Mage::getSingleton('customer/session')->setCity($geoip->getMyCity());
+		}
+	}
+	else
+	{
+		$city = $this->getRequest()->getParam('city');
+		if(!empty($city))
+		{
+			Mage::getSingleton('customer/session')->setCity($city);
+		}
+	}
 ?>
+												<form id="city" method="post">
+													<select name="city" id="city" onchange="this.form.submit();">
+												<?
+													$collection = Mage::getModel('gmapstrlocator/gmapstrlocator')
+															->getCollection()
+															->distinct(true)
+															->addFieldToSelect('district');
+
+													foreach($collection as $c) {
+														echo '<option'.(Mage::getSingleton('customer/session')->getCity() == $c['district'] ? ' selected' : null).'>'.$c['district'].'</option>';
+													}
+												?>
 													</select>
+												</form>
 											</div>
 				        <div class="phone-top-container"><?php echo $this->__('Free call') ?>: <a href="tel:<?php echo Mage::getStoreConfig('general/store_information/phone');?>"><?php echo substr( Mage::getStoreConfig('general/store_information/phone'), 0, 1)." (".substr( Mage::getStoreConfig('general/store_information/phone'), 1, 3).") ".substr( Mage::getStoreConfig('general/store_information/phone'), 4, 3)."-".substr( Mage::getStoreConfig('general/store_information/phone'),6); ?></a></div>
 				        <?php echo $this->getChildHtml('cartTop') ?>

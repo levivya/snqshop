@@ -4,8 +4,6 @@
  * @author    Queldorei http://www.queldorei.com <mail@queldorei.com>
  * @copyright Copyright (C) 2010 - 2012 Queldorei
  */
-//require_once($_SERVER['DOCUMENT_ROOT'].'/ipgeobase/ipgeobase.php');
-
 class Queldorei_Shopperslideshow_Block_Slideshow extends Mage_Core_Block_Template
 {
 	protected function _beforeToHtml()
@@ -46,36 +44,9 @@ class Queldorei_Shopperslideshow_Block_Slideshow extends Mage_Core_Block_Templat
 			->addFieldToFilter('status', 1)
 			->setOrder('sort_order', 'asc');
 		// geotargeting filter
-		$slides->getSelect()->where("(global = 1) or (global = 2 and city like '%".$this->getMyCity()."%')");
+		$city = Mage::getSingleton('customer/session')->getCity();
+		$slides->getSelect()->where("(global = 1) or (global = 2 and city like '%$city%')");
 		return $slides;
-	}
-
-	// Function to get the client IP address
-	private function get_client_ip() 
-	{
-    $ipaddress = '';
-    if (getenv('HTTP_CLIENT_IP'))
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    else if(getenv('HTTP_X_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    else if(getenv('HTTP_X_FORWARDED'))
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    else if(getenv('HTTP_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    else if(getenv('HTTP_FORWARDED'))
-       $ipaddress = getenv('HTTP_FORWARDED');
-    else if(getenv('REMOTE_ADDR'))
-        $ipaddress = getenv('REMOTE_ADDR');
-    else
-        $ipaddress = 'UNKNOWN';
-    return $ipaddress;
-	}
-
-	private function getMyCity()
-	{
-	  $gb = new IPGeoBaseRU_IPGeoBase();
-	  $data = $gb->getRecord($this->get_client_ip());
-		return $data ? $data['city'] : 'Москва';
 	}
 }
 ?>
