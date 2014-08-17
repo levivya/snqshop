@@ -61,7 +61,23 @@ if ( $config['design']['below_logo'] ) {
                     <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><?php echo $this->getChildHtml('theme_logo', false) ?></a>
 			        <?php endif?>
 	                <div class="top-dropdowns">
-	                    <div class="city-top-container"><select><option>Moscow</option></select></div>
+	                    <div class="city-top-container">
+                          <select>
+<?
+	$collection = Mage::getModel('gmapstrlocator/gmapstrlocator')
+      ->getCollection()
+      ->distinct(true)
+      ->addFieldToSelect('district');
+
+    // Retrieve cities from the store locator
+    $cities = array();
+
+    foreach($collection as $city) {
+      echo '<option>'.$city['district'].'</option>';
+    }
+?>
+													</select>
+											</div>
 				        <div class="phone-top-container"><?php echo $this->__('Free call') ?>: <a href="tel:<?php echo Mage::getStoreConfig('general/store_information/phone');?>"><?php echo substr( Mage::getStoreConfig('general/store_information/phone'), 0, 1)." (".substr( Mage::getStoreConfig('general/store_information/phone'), 1, 3).") ".substr( Mage::getStoreConfig('general/store_information/phone'), 4, 3)."-".substr( Mage::getStoreConfig('general/store_information/phone'),6); ?></a></div>
 				        <?php echo $this->getChildHtml('cartTop') ?>
 				        <?php echo $this->getChildHtml('compareTop') ?>
