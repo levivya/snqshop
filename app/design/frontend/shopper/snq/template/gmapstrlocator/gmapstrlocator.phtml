@@ -88,6 +88,15 @@ if(typeof String.prototype.trim !== 'function') {
     $standard_lat = Mage::helper('gmapstrlocator')->getGMapStandardLatitude();
     $standard_long = Mage::helper('gmapstrlocator')->getGMapStandardLongitude();
 
+    //Overwrite standard lat and long base on selected city in the top menu
+    //echo "<h1>".Mage::getSingleton('customer/session')->getCity()."</h1>";
+    $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=".Mage::getSingleton('customer/session')->getCity()."+Russia";
+
+    $response = file_get_contents($url);
+    $json = json_decode($response,TRUE); //generate array object from the response from the web
+    $standard_lat = $json['results'][0]['geometry']['location']['lat'];
+    $standard_long = $json['results'][0]['geometry']['location']['lng'];
+
     //direction button text
     $direction_button_text = Mage::helper('gmapstrlocator')->getDirectionButtonText();
     if($direction_button_text == ''): $direction_button_text = 'Get Direction'; endif;

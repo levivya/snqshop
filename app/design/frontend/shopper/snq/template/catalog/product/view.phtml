@@ -106,13 +106,18 @@ echo '<div class="product-category-title">'.$_category->getName().'</div>';
             }
             ?>
             <div class="product-shop-info">
-                <div class="product-name">
+                <div class="product-name" style="float: left">
                     <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
                 </div>
+                
+                <div class="product-view-brand" style="float: left; margin-left: 15%">
+                	<?php echo $this->getChildHtml('alert_urls') ?>
+                </div>
+                
                 <div class="clear"></div>
                 <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
-                <?php echo $this->getChildHtml('alert_urls') ?>
+                
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getTierPriceHtml() ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
