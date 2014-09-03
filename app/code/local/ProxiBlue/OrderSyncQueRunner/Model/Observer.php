@@ -17,7 +17,6 @@ class ProxiBlue_OrderSyncQueRunner_Model_Observer {
      * @return ProxiBlue_OrderSyncQueRunner_Model_Observer
      */
     public function sales_order_place_after($observer) {
-        
         $order = $observer->getEvent()->getOrder();
         try {
             $syncModel = mage::getModel('ordersyncquerunner/que');
