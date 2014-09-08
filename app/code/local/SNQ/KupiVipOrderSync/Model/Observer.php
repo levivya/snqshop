@@ -5,8 +5,8 @@
 		{
 		}
 		public function sales_order_place_after_que($observer) {
-			Mage::log('sales_order_place_after_que');
-			$order = $observer->getEvent();
+			//Mage::log('sales_order_place_after_que');
+			$order = $observer->getEvent()->getOrder();
 			try {
 				$order_sender = new SNQ_KupiVipOrderSync_Model_OrderSender();
 				$code = $order_sender->SendOrder($order);
@@ -15,7 +15,6 @@
 				Mage::log($e);
 				$observer->getEvent()->getContainer()->setStatus(-1);
 			}
-//			$observer->getEvent()->getContainer()->setStatus(200);
 			return $this;
 		}
 	}
