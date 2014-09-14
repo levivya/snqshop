@@ -59,21 +59,25 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		}
 		*/
 		$payment_type = array(
-			'checkmo' => 'COD',
-			'chronopay' => 'CHRONOPAY',
+			'checkmo'                  => 'COD',
+			'chronopay'                => 'CHRONOPAY',
 			'paypal_billing_agreement' => 'PAYPAL',
-			'paypal_mecl' => 'PAYPAL',
+			'paypal_mecl'              => 'PAYPAL',
 		);
 		$ret = array();
 		$header = array();
 		$header['ProcessType'] = 'SV_OPENTRANS_CREATE_ORDER';
-		$header['OrderNo'    ] = $order->getIncrementId();
-		$header['OrderDate'  ] = $order->getCreatedAt();
+		$header['OrderNo'] = $order->getIncrementId();
+		$header['OrderDate'] = $order->getCreatedAt();
 		$payment_method = $order->getPayment()->getMethod();
 		$header['PaymentType'] = $payment_type[$payment_method];
 		foreach($order->getTracksCollection() as $track) {
-			$header['AgentCode'] = $track->getCarrierCode();
-			$header['AgentService'] = $track->getTitle();
+			if($track->getCarrierCode()) {
+				$header['AgentCode'] = $track->getCarrierCode();
+			}
+			if($track->getTitle()) {
+				$header['AgentService'] = $track->getTitle();
+			}
 		}
 		$header['ShippingAmount'] = $order->getShippingAmount();
 		$header['OrderAmount'] = $order->getGrandTotal();
@@ -89,23 +93,33 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		$header['DeliverToCity'] = $shipping_address->getCity();
 		$street = implode(' ', $shipping_address->getStreet());
 		$header['DeliverToAdressStreet'] = $street;
+		/*
 		$header['DeliverToAdressHouse'] = '';
 		$header['DeliverToAdressCorps'] = '';
 		$header['DeliverToAdressApartment'] = '';
+		 */
 		$header['DeliverToEmail'] = $order->getCustomerEmail();
 		$header['DeliverToPhone'] = $shipping_address->getTelephone();
-		$header['CouponType'] = '';
+		if(!empty($order->getData()['coupon_code'])) {
+			$header['CouponType'] = $order->getData()['coupon_code'];
+		}
+		/*
 		$header['CouponUnit'] = '';
 		$header['CouponAmount'] = '';
 		$header['CouponDescription'] = '';
+		 */
 		$header['OrderType'] = 'SNQ';
-		$header['AmountPaymentInclVat'] = $order->getSubtotalInclTax() + $order->getShippingInclTax();
+		$subTotalInclTax = $order->getSubtotalInclTax();
+		$shippingInclTax = $order->getShippingInclTax();
+		$header['AmountPaymentInclVat'] = floatval($subTotalInclTax) + floatval($shippingInclTax);
 		$header['PaymentCompleted'] = '0';
 		$header['DeliverKladrId'] = '0';
-		$header['StatusId'] = '';
-		$header['Agent_OrderNO'] = '';
-		$header['CustomerComment'] = $order->getCustomerNote();
-		$header['LoyalCardNumber'] = '';
+		//$header['StatusId'] = '';
+		//$header['Agent_OrderNO'] = '';
+		if($order->getCustomerNote()) {
+			$header['CustomerComment'] = $order->getCustomerNote();
+		}
+		//$header['LoyalCardNumber'] = '';
 		$header['Account_Birthday'] = Mage::getModel('customer/customer')->load($order->getCustomerId())->getDob();
 		$lines = array();
 		$ordered_items = $order->getAllItems();
@@ -115,21 +129,26 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			$line['LineNo'] = $line_no;
 			$line['ItemId'] = $item->getItemId();
 			$line['CskuName'] = $item->getSku();
-			$line['VariantCode'] = $item->getAttributeText('product_size');
+			$line['VariantCode'] = 'product_size';
 			$line['Quantity'] = $item->getQtyOrdered();
 			$line['VatPercent'] = $item->getTaxPercent();
 			$line['VatAmount'] = $item->getTaxAmount();
-			$line['PriceExclVat'] = $item->getPrice();
-			$line['PriceInclVat'] = $item->getInclTax();
+			// deprecated
+			// $line['PriceExclVat'] = $item->getPrice();
+			$line['PriceInclVat'] = $item->getProduct()->getFinalPrice();
+			/*
 			$line['CouponExclVat'] = '';
-			$line['CouponInclVat'] = '';
+			 */
+			$line['CouponInclVat'] = $item->getDiscountAmount();
 			$line['ItemName'] = $item->getName();
-			$line['VariantName'] = $item->getAttributeText('product_size');
+			$line['VariantName'] = $item->getProduct()->getAttributeText('product_size');
 			$line['url'] = $item->getProduct()->getProductUrl();
-			$line['ItemDescription'] = $item->getDescription();
-			$line['ReturnReason'] = '';
-			$line['Campaign'] = '';
-			$line['Gift'] = '';
+			if(!empty($item->getDescription())) {
+				$line['ItemDescription'] = $item->getDescription();
+			}
+			//$line['ReturnReason'] = '';
+			//$line['Campaign'] = '';
+			//$line['Gift'] = '';
 			$lines[] = $line;
 			++$line_no;
 		}
