@@ -163,7 +163,7 @@ class IPGeoBaseRU_IPGeoBase
 
 	public function getMyCity()
 	{
-	  $this->getRecord($this->getClientIP());
+	  $data = $this->getRecord($this->getClientIP());
 		return $data ? $data['city'] : 'Москва';
 	}
 }
