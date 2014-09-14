@@ -120,7 +120,10 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			$header['CustomerComment'] = $order->getCustomerNote();
 		}
 		//$header['LoyalCardNumber'] = '';
-		$header['Account_Birthday'] = Mage::getModel('customer/customer')->load($order->getCustomerId())->getDob();
+		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+		if(!empty($customer->getDob())) {
+			$header['Account_Birthday'] = $customer->getDob();
+		}
 		$lines = array();
 		$ordered_items = $order->getAllItems();
 		$line_no = 1;
