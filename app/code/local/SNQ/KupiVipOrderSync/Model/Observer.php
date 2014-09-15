@@ -18,7 +18,7 @@
 			return $this;
 		}
 		public function sales_order_item_cancel($observer) {
-			Mage::log('cancel order: '.$observer->getOrder()->getIncrementId());
+			Mage::log('cancel order: '.$observer->getEvent()->getOrder()->getIncrementId());
 		}
 	}
 ?>
