@@ -47,6 +47,15 @@
         </resources>
 				-->
         <events>
+					  <sales_order_item_cancel>
+							<observers>
+								<kupivipordersync_sales_order_item_cancel>
+									<type>singleton</type>
+									<class>SNQ_KupiVipOrderSync_Model_Observer</class>
+									<method>sales_order_item_cancel</method>
+								</kupivipordersync_sales_order_item_cancel>
+							</observers>
+						</sales_order_item_cancel>
             <sales_order_place_after_que>
                 <observers>
                     <kupivipordersync_sales_order_place_after_que>
