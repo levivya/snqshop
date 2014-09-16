@@ -63,6 +63,8 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			'chronopay'                => 'CHRONOPAY',
 			'paypal_billing_agreement' => 'PAYPAL',
 			'paypal_mecl'              => 'PAYPAL',
+			'cashondelivery'           => 'COD',
+			'free'                     => 'COD'
 		);
 		$ret = array();
 		$header = array();
