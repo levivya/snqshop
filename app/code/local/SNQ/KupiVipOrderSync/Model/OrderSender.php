@@ -57,7 +57,8 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		foreach($allActivePaymentMethods as $m) {
 			Mage::log($m->getCode());
 		}
-		*/
+		 */
+		$product_size_code = $this->getAttributeId('product_size');
 		$payment_type = array(
 			'checkmo'                  => 'COD',
 			'chronopay'                => 'CHRONOPAY',
@@ -70,7 +71,7 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		$header = array();
 		$header['ProcessType'] = 'SV_OPENTRANS_CREATE_ORDER';
 		$header['OrderNo'] = $order->getIncrementId();
-		$header['OrderDate'] = $order->getCreatedAt();
+		$header['OrderDate'] = $this->formatDateTime($order->getCreatedAt());
 		$payment_method = $order->getPayment()->getMethod();
 		$header['PaymentType'] = $payment_type[$payment_method];
 		foreach($order->getTracksCollection() as $track) {
@@ -113,8 +114,14 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		$header['OrderType'] = 'SNQ';
 		$subTotalInclTax = $order->getSubtotalInclTax();
 		$shippingInclTax = $order->getShippingInclTax();
-		$header['AmountPaymentInclVat'] = floatval($subTotalInclTax) + floatval($shippingInclTax);
-		$header['PaymentCompleted'] = '0';
+		if($header['PaymentType'] != 'COD') {
+			$header['AmountPaymentInclVat'] = floatval($subTotalInclTax) + floatval($shippingInclTax);
+			if($order->getStatus() == 'pending' || $order->getStatus() == 'new') {
+				$header['PaymentCompleted'] = '1';
+			} else {
+				$header['PaymentCompleted'] = '0';
+			}
+		}
 		$header['DeliverKladrId'] = '0';
 		//$header['StatusId'] = '';
 		//$header['Agent_OrderNO'] = '';
@@ -124,7 +131,7 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		//$header['LoyalCardNumber'] = '';
 		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 		if(!empty($customer->getDob())) {
-			$header['Account_Birthday'] = $customer->getDob();
+			$header['Account_Birthday'] = $this->formatDate($customer->getDob());
 		}
 		$lines = array();
 		$ordered_items = $order->getAllItems();
@@ -134,7 +141,7 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			$line['LineNo'] = $line_no;
 			$line['ItemId'] = $item->getItemId();
 			$line['CskuName'] = $item->getSku();
-			$line['VariantCode'] = 'product_size';
+			$line['VariantCode'] = $product_size_code;
 			$line['Quantity'] = $item->getQtyOrdered();
 			$line['VatPercent'] = $item->getTaxPercent();
 			$line['VatAmount'] = $item->getTaxAmount();
@@ -144,10 +151,12 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			/*
 			$line['CouponExclVat'] = '';
 			 */
-			$line['CouponInclVat'] = $item->getDiscountAmount();
+			if(!empty($item->getDiscountAmount())) {
+				$line['CouponInclVat'] = $item->getDiscountAmount();
+			}
 			$line['ItemName'] = $item->getName();
 			$line['VariantName'] = $item->getProduct()->getAttributeText('product_size');
-			$line['url'] = $item->getProduct()->getProductUrl();
+			$line['url'] = Mage::helper('catalog/image')->init($item->getProduct(), 'image');
 			if(!empty($item->getDescription())) {
 				$line['ItemDescription'] = $item->getDescription();
 			}
@@ -160,6 +169,20 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		$header['OrderLine'] = $lines;
 		$ret['OrderHeader'] = $header;
 		return $ret;
+	}
+
+	public function getAttributeId($name)   {
+		$eavAttribute = new Mage_Eav_Model_Mysql4_Entity_Attribute();
+		$code = $eavAttribute->getIdByCode('catalog_product', $name);
+		return $code;
+	}
+
+	public function formatDate($date) {
+		return Mage::app()->getLocale()->date(strtotime($date), null, null, false)->toString('yyyy-MM-dd');
+	}
+
+	public function formatDateTime($date) {
+		return Mage::app()->getLocale()->date(strtotime($date), null, null, false)->toString('yyyy-MM-dd HH:mm:ss');
 	}
 }
 ?>
