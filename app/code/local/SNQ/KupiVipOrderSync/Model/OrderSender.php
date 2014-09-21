@@ -103,14 +103,10 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		 */
 		$header['DeliverToEmail'] = $order->getCustomerEmail();
 		$header['DeliverToPhone'] = $shipping_address->getTelephone();
-		if(!empty($order->getData()['coupon_code'])) {
-			$header['CouponType'] = $order->getData()['coupon_code'];
-		}
-		/*
+		$header['CouponType'] = $order->getData()['coupon_code'];
 		$header['CouponUnit'] = '';
-		$header['CouponAmount'] = '';
+		$header['CouponAmount'] = 0.0000;
 		$header['CouponDescription'] = '';
-		 */
 		$header['OrderType'] = 'SNQ';
 		$subTotalInclTax = $order->getSubtotalInclTax();
 		$shippingInclTax = $order->getShippingInclTax();
@@ -122,16 +118,16 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 				$header['PaymentCompleted'] = '0';
 			}
 		}
-		$header['DeliverKladrId'] = '0';
+		$header['DeliverKladrId'] = '';
 		//$header['StatusId'] = '';
-		//$header['Agent_OrderNO'] = '';
+		$header['Agent_OrderNO'] = '';
 		if($order->getCustomerNote()) {
 			$header['CustomerComment'] = $order->getCustomerNote();
 		}
-		//$header['LoyalCardNumber'] = '';
+		$header['LoyalCardNumber'] = '';
 		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 		if(!empty($customer->getDob())) {
-			$header['Account_Birthday'] = $this->formatDate($customer->getDob());
+			$header['Account_Birthday'] = $this->formatDateTime($customer->getDob());
 		}
 		$lines = array();
 		$ordered_items = $order->getAllItems();
@@ -141,12 +137,8 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 			$line['LineNo'] = $line_no;
 			$line['ItemId'] = $item->getItemId();
 			$line['CskuName'] = $item->getSku();
-			$line['VariantCode'] = $product_size_code;
+			$line['VariantCode'] = '';
 			$line['Quantity'] = $item->getQtyOrdered();
-			$line['VatPercent'] = $item->getTaxPercent();
-			$line['VatAmount'] = $item->getTaxAmount();
-			// deprecated
-			// $line['PriceExclVat'] = $item->getPrice();
 			$line['PriceInclVat'] = $item->getProduct()->getFinalPrice();
 			/*
 			$line['CouponExclVat'] = '';
@@ -171,18 +163,16 @@ class SNQ_KupiVipOrderSync_Model_OrderSender {
 		return $ret;
 	}
 
-	public function getAttributeId($name)   {
+	public function getAttributeId($name) {
 		$eavAttribute = new Mage_Eav_Model_Mysql4_Entity_Attribute();
 		$code = $eavAttribute->getIdByCode('catalog_product', $name);
 		return $code;
 	}
 
-	public function formatDate($date) {
-		return Mage::app()->getLocale()->date(strtotime($date), null, null, false)->toString('yyyy-MM-dd');
-	}
-
 	public function formatDateTime($date) {
-		return Mage::app()->getLocale()->date(strtotime($date), null, null, false)->toString('yyyy-MM-dd HH:mm:ss');
+		return date_format(
+			date_create_from_format('Y-m-d H:i:s', $date),
+			'Ymd H:i:s.000');
 	}
 }
 ?>
